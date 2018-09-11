@@ -54,14 +54,21 @@ export default class ReactConnectElements extends PureComponent {
         <Portal query={this.state.querySelector}>
           <div
             id="react-connect-elements-container"
-            style={{ zIndex: overlay, position: 'absolute' }}
+            style={{
+              zIndex: overlay,
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+            }}
             ref={svg => {
               this.svgContainer = svg;
             }}
           >
             <svg
-              width="0"
-              height="0"
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
               ref={svg => {
                 this.svg = svg;
               }}

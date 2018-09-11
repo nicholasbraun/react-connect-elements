@@ -6,12 +6,6 @@ export const drawPath = (svg, path, startX, startY, endX, endY) => {
   // get the path's stroke width (if one wanted to be  really precize, one could use half the stroke size)
 
   const stroke = parseFloat(path.getAttribute('stroke-width'));
-  // check if the svg is big enough to draw the path, if not, set heigh/width
-  if (svg.getAttribute('height') < endY) svg.setAttribute('height', endY);
-  if (svg.getAttribute('width') < startX + stroke)
-    svg.setAttribute('width', startX + stroke);
-  if (svg.getAttribute('width') < endX + stroke)
-    svg.setAttribute('width', endX + stroke);
 
   const deltaX = (endX - startX) * 0.15;
   const deltaY = (endY - startY) * 0.15;

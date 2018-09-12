@@ -7,11 +7,20 @@ export const drawPath = (svg, path, startX, startY, endX, endY) => {
 
   const stroke = parseFloat(path.getAttribute('stroke-width'));
 
-  const deltaX = (endX - startX) * 0.15;
-  const deltaY = (endY - startY) * 0.15;
+  const deltaX = endX - startX;
+  const tension = deltaX * -0.225;
+
+  const midX = (endX + startX) / 2;
+  const midY = (endY + startY) / 2;
+
+  let mid1X = ((midX + startX) / 2) + tension;
+  const mid1Y = (midY + startY) / 2;
+
+  let mid2X = ((endX + midX) / 2) - tension;
+  const mid2Y = (endY + midY) / 2;
 
   // for further calculations which ever is the shortest distance
-  const delta = deltaY < absolute(deltaX) ? deltaY : absolute(deltaX);
+  const delta = midY < absolute(midX) ? midY : absolute(midX);
 
   // set sweep-flag (counter/clock-wise)
   // if start element is closer to the left edge,
@@ -23,15 +32,17 @@ export const drawPath = (svg, path, startX, startY, endX, endY) => {
     arc2 = 0;
   }
 
+  let svgPath = `M${startX} ${startY} C ${mid1X} ${mid1Y}, ${mid1X} ${mid1Y}, ${midX} ${midY} C ${mid2X} ${mid2Y}, ${mid2X} ${mid2Y}, ${endX} ${endY}`;
+
+  if (endX === startX) {
+    svgPath = `M${startX} ${startY} L ${endX} ${endY}`;
+  }
+
   // draw tha pipe-like path
   // 1. move a bit down, 2. arch,  3. move a bit to the right, 4.arch, 5. move down to the end
   path.setAttribute(
     'd',
-    `M${startX} ${startY} V${startY +
-      delta} A${delta} ${delta} 0 0 ${arc1} ${startX +
-      delta * signum(deltaX)} ${startY + 2 * delta} H${endX -
-      delta * signum(deltaX)} A${delta} ${delta} 0 0 ${arc2} ${endX} ${startY +
-      3 * delta} V${endY}`
+    svgPath
   );
 };
 

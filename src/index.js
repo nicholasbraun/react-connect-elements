@@ -24,7 +24,16 @@ export default class ReactConnectElements extends PureComponent {
 
   componentDidMount() {
     this.checkSelector();
+    window.addEventListener('resize', this.handleResize);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  handleResize = () => {
+    this.checkSelector();
+  };
 
   checkSelector = () => {
     if (document.querySelector(this.props.selector)) {
